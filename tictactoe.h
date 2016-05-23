@@ -6,6 +6,8 @@ private:
 	char** gameBoard;
 	bool gameOver;
 public:
+	void restart();
+	bool endGame();
 	tictactoe();
 	void display();
 	void place(char,int, int);
