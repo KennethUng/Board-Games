@@ -4,16 +4,26 @@
 using namespace std;
 
 int main() {
-	int choice;
+	int row,column;
 	tictactoe board;
-	board.display();
-	cout << "\nWould you like to restart?\n(1)Yes\n(2)No\n";
-	cin >> choice;
-	if (choice == 1) {
-		board.restart();
-	}
-	else {
-		exit(0);
+	while (!board.isGameOver()) {
+		cout << "Player 1: X, Player 2: O";
+		if (board.getTurn() % 2 == 0) {
+			cout << "\nPlayer 1";
+			cout << "\nRow: ";
+			cin >> row;
+			cout << "\nColumn: ";
+			cin >> column;
+			board.place(row, column);
+		}
+		else {
+			cout << "\nPlayer 2";
+			cout << "\nRow: ";
+			cin >> row;
+			cout << "\nColumn: ";
+			cin >> column;
+			board.place(row, column);
+		}
 	}
 
 }
