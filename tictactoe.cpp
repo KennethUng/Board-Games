@@ -70,6 +70,7 @@ void tictactoe::restart() {
 		}
 	}
 	gameOver = false;
+	counter = 0;
 	display();
 }
 bool tictactoe::isGameOver() {
@@ -78,20 +79,25 @@ bool tictactoe::isGameOver() {
 int tictactoe::getTurn() {
 	return counter;
 }
+/*Checks the index of the Row to see if that row is completed.*/
 bool tictactoe::checkRow(int x) {
+	/*Check = [row][0] <-- Should go through 0-2*/
 	char check = *(*(gameBoard + x) + 0);
 	for (int i = 0; i < 3; i++) {
 		if (*(*(gameBoard + x) + i) == ' ' || *(*(gameBoard + x)+ i) != check) {
 			return false;
 		}
 	}
+	/*If the above doesn't return false, we know it's true and the winner will be equal to whoever check was on.*/
 	winner = check;
 	return true;
 }
+
 bool tictactoe::checkColumn(int y) {
+	/*Should equal to [0][column] from 0-2*/
 	char check = *(*(gameBoard + 0) + y);
 	for (int i = 0; i < 3; i++) {
-		if (*(*(gameBoard + y) + i) == ' ' || *(*(gameBoard + y) + i) != check) {
+		if (*(*(gameBoard + i) + y) == ' ' || *(*(gameBoard + i) + y) != check) {
 			return false;
 		}
 	}
@@ -132,9 +138,9 @@ bool tictactoe::checkDraw() {
 	}
 }
 void tictactoe::check(int x,int y) {
-	if (checkRow(y))
+	if (checkRow(x))
 		gameOver = true;
-	if (checkColumn(x))
+	if (checkColumn(y))
 		gameOver = true;
 	if (checkDiagonal(0))
 		gameOver = true;
