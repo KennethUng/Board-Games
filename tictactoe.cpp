@@ -12,6 +12,7 @@ tictactoe::tictactoe() {
 		*(gameBoard + i) = new char[3];
 
 	}
+	winner = ' ';
 	gameOver = false;
 	restart();
 }
@@ -27,6 +28,7 @@ void tictactoe::display() {
 		cout << "-------------" << endl;
 	}
 }
+/*Puts the users input onto the board*/
 void tictactoe::place(int row, int column) {
 	if (counter % 2 == 0) {
 		if (row < 3 && column < 3 && *(*(gameBoard + row) + column) != 'X' && *(*(gameBoard + row) + column) != 'O') {
@@ -63,23 +65,27 @@ void tictactoe::place(int row, int column) {
 		}
 	}
 }
+/*Responsible for restarting the game.*/
 void tictactoe::restart() {
 	for (int i = 0; i < 3; i++) {
 		for (int j = 0; j < 3; j++) {
 			*(*(gameBoard + i) + j) = ' ';
 		}
 	}
+	winner = ' ';
 	gameOver = false;
 	counter = 0;
 	display();
 }
+/*Checks if the game is over*/
 bool tictactoe::isGameOver() {
 	return gameOver;
 }
+/*Gets the counter*/
 int tictactoe::getTurn() {
 	return counter;
 }
-/*Checks the index of the Row to see if that row is completed.*/
+/*Checks to see if anyone won horizontally*/
 bool tictactoe::checkRow(int x) {
 	/*Check = [row][0] <-- Should go through 0-2*/
 	char check = *(*(gameBoard + x) + 0);
@@ -89,10 +95,11 @@ bool tictactoe::checkRow(int x) {
 		}
 	}
 	/*If the above doesn't return false, we know it's true and the winner will be equal to whoever check was on.*/
+//	cout << "Row";
 	winner = check;
 	return true;
 }
-
+/*Checks to see if anyone won vertically*/
 bool tictactoe::checkColumn(int y) {
 	/*Should equal to [0][column] from 0-2*/
 	char check = *(*(gameBoard + 0) + y);
@@ -101,9 +108,11 @@ bool tictactoe::checkColumn(int y) {
 			return false;
 		}
 	}
+//	cout << "Column";
 	winner = check;
 	return true;
 }
+/*Checking if anyone won diagonally*/
 bool tictactoe::checkDiagonal(int diagonal) {
 	char check = *(*(gameBoard + 0) + diagonal);
 	if (diagonal == 0) {
@@ -114,29 +123,35 @@ bool tictactoe::checkDiagonal(int diagonal) {
 			}
 			x++;
 		}
+//		cout << "Right";
 		winner = check;
 		return true;
 	}
 	else {
 		int x = 0;
-		for (int i = diagonal; i > 0; i--) {
+		for (int i = diagonal; i >= 0; i--) {
 			if (*(*(gameBoard + x) + i) == ' ' || *(*(gameBoard + x) + i) != check) {
 				return false;
 			}
 			x++;
 		}
+//		cout << "Left";
 		winner = check;
 		return true;
 	}
 }
+/*Checking for a Draw*/
 bool tictactoe::checkDraw() {
-	if (counter > 9) {
+	if (counter == 9) {
+//		cout << counter << "<--Current Counter\n";
 		return true;
 	}
 	else {
+//		cout << counter << "<--Current Counter\n";
 		return false;
 	}
 }
+/*Checks to see if the game is over*/
 void tictactoe::check(int x,int y) {
 	if (checkRow(x))
 		gameOver = true;
@@ -150,8 +165,9 @@ void tictactoe::check(int x,int y) {
 		gameOver = true;
 	whoWon();
 }
+/*Checks to see who's the winner if any*/
 void tictactoe::whoWon() {
-	if (winner != player1 && winner != player2 && counter == 10) {
+	if (winner != player1 && winner != player2) {
 		cout << "Draw!";
 	}
 	else if (winner == player1) {
